@@ -85,7 +85,7 @@ export function validateParties(raw: unknown): PartyData[] {
 export const DEFAULT_PROMISES_URL = 'https://utlovat.se/api/v1/promises.json';
 export const DEFAULT_PARTIES_URL = 'https://utlovat.se/api/v1/parties.json';
 
-export async function fetchWithTimeout(url: string, timeoutMs = 4000): Promise<unknown> {
+export async function fetchWithTimeout(url: string, timeoutMs = 30000): Promise<unknown> {
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), timeoutMs);
   try {
