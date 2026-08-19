@@ -21,6 +21,17 @@ export interface UiCallbacks {
   onCloseAbout: () => void;
 }
 
+
+export function escapeHtml(str: string): string {
+  if (!str) return '';
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
 export function formatSEK(amount: number): string {
   return new Intl.NumberFormat('sv-SE', { style: 'currency', currency: 'SEK', maximumFractionDigits: 0 }).format(amount);
 }
@@ -320,7 +331,7 @@ export function renderEventView(
           <span>📍 Kampanjmöte i <strong>${region.name}</strong></span>
           <span>•</span>
           <span class="px-2 py-0.5 rounded bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 font-semibold capitalize">
-            ${promise.category}
+            ${escapeHtml(promise.category)}
           </span>
         </div>
         <div class="font-mono">
@@ -335,19 +346,19 @@ export function renderEventView(
           <div class="space-y-2 flex-1">
             <div class="flex items-center justify-between gap-2">
               <span class="text-xs font-semibold px-2 py-0.5 rounded" style="background-color: ${party.color}20; color: ${party.color_text}">
-                Löfte från ${party.name}
+                Löfte från ${escapeHtml(party.name)}
               </span>
               <span class="text-xs font-mono text-slate-500">
                 Beräknad reformkostnad: <strong>${costLabel}</strong>
               </span>
             </div>
             <h2 class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white leading-snug">
-              "${promise.title}"
+              "${escapeHtml(promise.title)}"
             </h2>
             ${
               promise.quote && promise.quote !== promise.title
                 ? `<blockquote class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 italic border-l-2 border-slate-200 dark:border-slate-700 pl-3 py-1">
-                    ${promise.quote}
+                    ${escapeHtml(promise.quote)}
                   </blockquote>`
                 : ''
             }
@@ -355,8 +366,8 @@ export function renderEventView(
         </div>
 
         <div class="text-[11px] text-slate-400 bg-slate-50 dark:bg-slate-900/60 p-2.5 rounded-lg flex items-center justify-between">
-          <span>Källa: <a href="${promise.source.url}" target="_blank" rel="noopener noreferrer" class="underline hover:text-indigo-600">${promise.source.domain}</a> via <strong class="text-indigo-600">utlovat.se</strong> (CC-BY-4.0)</span>
-          <span>Status: <strong class="capitalize text-slate-700 dark:text-slate-300">${promise.status}</strong></span>
+          <span>Källa: <a href="${escapeHtml(promise.source.url)}" target="_blank" rel="noopener noreferrer" class="underline hover:text-indigo-600">${escapeHtml(promise.source.domain)}</a> via <strong class="text-indigo-600">utlovat.se</strong> (CC-BY-4.0)</span>
+          <span>Status: <strong class="capitalize text-slate-700 dark:text-slate-300">${escapeHtml(promise.status)}</strong></span>
         </div>
       </div>
 
@@ -521,16 +532,16 @@ export function renderFactCheckView(state: GameState, partiesMap: Map<string, Pa
           <span class="font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
             🔍 Faktaunderlag från utlovat.se
           </span>
-          <span class="text-slate-400 font-mono">${record.promise.id}</span>
+          <span class="text-slate-400 font-mono">${escapeHtml(record.promise.id)}</span>
         </div>
 
         <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-          ${record.promise.cost.calculation || 'Förslaget har analyserats av utlovat.se baserat på offentliga källor och riksdagens handlingar.'}
+          ${escapeHtml(record.promise.cost.calculation || 'Förslaget har analyserats av utlovat.se baserat på offentliga källor och riksdagens handlingar.')}
         </p>
 
         <div class="pt-2 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between text-[11px] text-slate-500">
-          <span>Ursprungligt löfte från: <strong class="text-slate-700 dark:text-slate-300">${party.name}</strong></span>
-          <a href="${record.promise.source.url}" target="_blank" rel="noopener noreferrer" class="text-indigo-600 dark:text-indigo-400 font-semibold underline hover:text-indigo-800">
+          <span>Ursprungligt löfte från: <strong class="text-slate-700 dark:text-slate-300">${escapeHtml(party.name)}</strong></span>
+          <a href="${escapeHtml(record.promise.source.url)}" target="_blank" rel="noopener noreferrer" class="text-indigo-600 dark:text-indigo-400 font-semibold underline hover:text-indigo-800">
             Läs fullständig granskning →
           </a>
         </div>
